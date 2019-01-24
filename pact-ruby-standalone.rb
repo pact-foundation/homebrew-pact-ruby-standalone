@@ -1,4 +1,4 @@
-class Weather < Formula
+class PactRubyStandalone < Formula
   desc "A command line tool to run PACT mock service"
   homepage "https://github.com/pact-foundation/pact-ruby-standalone/"
   url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.63.0/pact-1.63.0-osx.tar.gz"
