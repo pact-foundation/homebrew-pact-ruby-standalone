@@ -5,7 +5,13 @@ class PactRubyStandalone < Formula
   sha256 "6bd3cf5194267c9d9e00f5833b691dbf0fccac7465b46d979560cb352f83bd02"
 
   def install
-    bin.install "pact-ruby-standalone"
+    bin.install "bin/pact"
+    bin.install "bin/pact-broker"
+    bin.install "bin/pact-message"
+    bin.install "bin/pact-mock-service"
+    bin.install "bin/pact-provider-verifier"
+    bin.install "bin/pact-publish"
+    bin.install "bin/pact-stub-service"
   end
 
 end
