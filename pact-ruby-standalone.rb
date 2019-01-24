@@ -12,6 +12,9 @@ class PactRubyStandalone < Formula
     bin.install "bin/pact-provider-verifier"
     bin.install "bin/pact-publish"
     bin.install "bin/pact-stub-service"
+
+    puts "Usage `pact-mock-service help [COMMAND]"
+    puts "For other tools related to PACT see https://github.com/pact-foundation/pact-ruby-standalone/releases/tag/v1.63.0"
   end
 
 end
