@@ -19,4 +19,8 @@ class PactRubyStandalone < Formula
     puts "#######################################"
   end
 
+  test do
+    system "#{bin}/pact-mock-service", "help"
+  end
+
 end
