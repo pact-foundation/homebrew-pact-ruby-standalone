@@ -6,15 +6,8 @@ class PactRubyStandalone < Formula
   sha256 "1074ab2693c4a2f45ce48a0d9e32f1510dadf8a997ae4c74eb98c808eab6bc65"
 
   def install
-    FileUtils.copy_entry "lib", "lib"
-    
-    bin.install "bin/pact"
-    bin.install "bin/pact-broker"
-    bin.install "bin/pact-message"
-    bin.install "bin/pact-mock-service"
-    bin.install "bin/pact-provider-verifier"
-    bin.install "bin/pact-publish"
-    bin.install "bin/pact-stub-service"
+    bin.install Dir["bin/*"]
+    lib.install Dir["lib/*"]
 
     puts "###### pact-mock-service ##############"
     puts "#"
