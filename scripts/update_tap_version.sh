@@ -3,7 +3,7 @@ set -e
 
 homepage="https://github.com/pact-foundation/pact-ruby-standalone"
 version=$1
-FORMULAE_FILE="../pact-ruby-standalone.rb"
+FORMULAE_FILE="pact-ruby-standalone.rb"
 
 write_homebrew_formulae() {    
     if [ ! -f "$FORMULAE_FILE" ] ; then
@@ -16,7 +16,7 @@ write_homebrew_formulae() {
         echo "class PactRubyStandalone < Formula" >&3
         echo "    desc \"A standalone pact command line executable using the ruby pact implementation and Travelling Ruby\"" >&3
         echo "    homepage \"$homepage\"" >&3
-        echo "    url \"$homepage/releases/download/$version/pact-$version-osx.tar.gz\"" >&3
+        echo "    url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
         echo "    version \"$version\"" >&3
         echo "    sha256 \"${shasignature[1]}\"" >&3
         echo "" >&3
@@ -53,10 +53,14 @@ else
 
     write_homebrew_formulae
 
-    echo "Sorting out the repo..."
+    echo "Sorting out the repo... "
+    echo "...you are running this script from ./homebrew-pact-ruby-standalone root folder, and NOT on \"master\", right?"
+    git checkout -b version/v$version
     git add $FORMULAE_FILE
-    git commit -m "Release of version $version"
-    # git push origin
+    git commit -m "Release of version v$version"
+    git push -u origin version/v$version
+
+    echo "Go and open that PR now..."
 
     echo "Done!"
     exit 0
