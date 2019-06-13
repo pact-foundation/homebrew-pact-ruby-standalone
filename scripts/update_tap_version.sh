@@ -3,7 +3,7 @@ set -e
 
 homepage="https://github.com/pact-foundation/pact-ruby-standalone"
 version=$1
-FORMULAE_FILE="pact-ruby-standalone.rb"
+FORMULAE_FILE="../pact-ruby-standalone.rb"
 
 write_homebrew_formulae() {    
     if [ ! -f "$FORMULAE_FILE" ] ; then
@@ -52,6 +52,11 @@ else
     echo "Writing formulae..."
 
     write_homebrew_formulae
+
+    echo "Sorting out the repo..."
+    git add $FORMULAE_FILE
+    git commit -m "Release of version $version"
+    # git push origin
 
     echo "Done!"
     exit 0
