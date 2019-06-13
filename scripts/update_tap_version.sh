@@ -14,25 +14,25 @@ write_homebrew_formulae() {
 
      exec 3<> $FORMULAE_FILE
         echo "class PactRubyStandalone < Formula" >&3
-        echo "    desc \"A standalone pact command line executable using the ruby pact implementation and Travelling Ruby\"" >&3
-        echo "    homepage \"$homepage\"" >&3
-        echo "    url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
-        echo "    version \"$version\"" >&3
-        echo "    sha256 \"${shasignature[1]}\"" >&3
+        echo "  desc \"A standalone pact command line executable using the ruby pact implementation and Travelling Ruby\"" >&3
+        echo "  homepage \"$homepage\"" >&3
+        echo "  url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
+        echo "  version \"$version\"" >&3
+        echo "  sha256 \"${shasignature[1]}\"" >&3
         echo "" >&3
-        echo "    def install" >&3
-        echo "        bin.install Dir[\"bin/*\"]" >&3
-        echo "        lib.install Dir[\"lib/*\"]" >&3
+        echo "  def install" >&3
+        echo "    bin.install Dir[\"bin/*\"]" >&3
+        echo "    lib.install Dir[\"lib/*\"]" >&3
         echo "" >&3
-        echo "        puts \"# Usage: pact-mock-service help [COMMAND]\"" >&3
-        echo "        puts \"#\"" >&3
-        echo "        puts \"# For other tools related to PACT in this bundle see $homepage/releases/\"" >&3
-        echo "        puts \"#\"" >&3
-        echo "    end" >&3
+        echo "    puts \"# Usage: pact-mock-service help [COMMAND]\"" >&3
+        echo "    puts \"#\"" >&3
+        echo "    puts \"# For other tools related to PACT in this bundle see $homepage/releases/\"" >&3
+        echo "    puts \"#\"" >&3
+        echo "  end" >&3
         echo "" >&3
-        echo "    test do" >&3
-        echo "        system \"#{bin}/pact-mock-service\", \"help\"" >&3
-        echo "    end" >&3
+        echo "  test do" >&3
+        echo "    system \"#{bin}/pact-mock-service\", \"help\"" >&3
+        echo "  end" >&3
         echo "" >&3
         echo "end" >&3
     exec 3>&-
