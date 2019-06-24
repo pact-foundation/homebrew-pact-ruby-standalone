@@ -38,8 +38,21 @@ write_homebrew_formulae() {
     exec 3>&-
 }
 
+display_help() {
+    echo "This script must be run from the root folder."
+}
+
+display_usage() { 
+    echo "\nUsage:\n\"./scripts/update_tap_version.sh 1.64.1\"\n" 
+} 
+
 if [[ $# -eq 0 ]] ; then
-    echo -e "ERROR: Need to provide an argument for the pact-ruby-standalone version as x.yy.z (eg: \"./update_tap_version.sh 1.64.1\")"
+    echo "ERROR: Need to provide an argument for the pact-ruby-standalone version as x.yy.z"
+    display_usage
+    exit 1
+elif [[ $1 == "--help" ||  $1 == "-h" ]] ; then
+    display_help
+    display_usage
     exit 1
 else
     echo "Downloading pact-$version-osx.tar.gz from $homepage"
@@ -53,6 +66,15 @@ else
 
     write_homebrew_formulae
 
+    echo "Sorting out the homebrew tap... "
+    git checkout -b version/v$version
+    git add $FORMULAE_FILE
+    git commit -m "Release of version v$version"
+    git push -u origin version/v$version
+
+    echo "Go and open that PR now..."
+
     echo "Done!"
+
     exit 0
 fi
