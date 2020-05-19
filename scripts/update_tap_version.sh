@@ -42,12 +42,12 @@ display_help() {
     echo "This script must be run from the root folder."
 }
 
-display_usage() { 
-    echo "\nUsage:\n\"./scripts/update_tap_version.sh 1.64.1\"\n" 
-} 
+display_usage() {
+    echo "\nUsage:\n\"./scripts/update_tap_version.sh 1.64.1\"\n"
+}
 
 if [[ $# -eq 0 ]] ; then
-    echo "ERROR: Need to provide an argument for the pact-ruby-standalone version as x.yy.z"
+    echo "🚨 Provide an argument for the pact-ruby-standalone version as x.yy.z"
     display_usage
     exit 1
 elif [[ $1 == "--help" ||  $1 == "-h" ]] ; then
@@ -55,26 +55,41 @@ elif [[ $1 == "--help" ||  $1 == "-h" ]] ; then
     display_usage
     exit 1
 else
-    echo "Downloading pact-$version-osx.tar.gz from $homepage"
+    echo "⬇️  Downloading pact-$version-osx.tar.gz from $homepage"
     curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz
-    
-    shasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
-    echo "Signature: ${shasignature[1]}"
-    echo "Cleaning up..."
+
+    shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
+    echo "🔏 Checksum:\t ${shasignature[1]}"
+
+		echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
+		curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz.checksum
+
+		expectedsha=( $(eval "cat pact-$version-osx.tar.gz.checksum") )
+		echo "🔏 Expected:\t ${expectedsha[0]}"
+
+		if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
+			echo "👮‍♀️ Check: 👍"
+		else
+			echo "👮‍♀️ Check: 🚨 - checksums do not match!"
+			exit 1
+		fi
+
+    echo "🧹 Cleaning up..."
     rm pact-$1-osx.tar.gz
-    echo "Writing formulae..."
+    echo "🧪 Writing formulae..."
 
     write_homebrew_formulae
 
-    echo "Sorting out the homebrew tap... "
+    echo "⚗️  Sorting out the homebrew tap version... "
     git checkout -b version/v$version
     git add $FORMULAE_FILE
     git commit -m "Release of version v$version"
     git push -u origin version/v$version
 
-    echo "Go and open that PR now..."
+    echo "Go and open that PR now:"
+		echo "$homepage/compare/master...version/v$version"
 
-    echo "Done!"
+    echo "🎉 Done!"
 
     exit 0
 fi
