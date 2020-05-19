@@ -61,18 +61,18 @@ else
     shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
     echo "🔏 Checksum:\t ${shasignature[1]}"
 
-		echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
-		curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz.checksum
+    echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
+    curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz.checksum
 
-		expectedsha=( $(eval "cat pact-$version-osx.tar.gz.checksum") )
-		echo "🔏 Expected:\t ${expectedsha[0]}"
+    expectedsha=( $(eval "cat pact-$version-osx.tar.gz.checksum") )
+    echo "🔏 Expected:\t ${expectedsha[0]}"
 
-		if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
-			echo "👮‍♀️ Check: 👍"
-		else
-			echo "👮‍♀️ Check: 🚨 - checksums do not match!"
-			exit 1
-		fi
+    if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
+        echo "👮‍♀️ Check: 👍"
+    else
+        echo "👮‍♀️ Check: 🚨 - checksums do not match!"
+        exit 1
+    fi
 
     echo "🧹 Cleaning up..."
     rm pact-$1-osx.tar.gz
@@ -86,8 +86,8 @@ else
     git commit -m "Release of version v$version"
     git push -u origin version/v$version
 
-    echo "Go and open that PR now:"
-		echo "$homepage/compare/master...version/v$version"
+    echo "👏  Go and open that PR now:"
+    echo "🔗  $homepage/compare/master...version/v$version"
 
     echo "🎉 Done!"
 
