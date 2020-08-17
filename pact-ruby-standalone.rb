@@ -3,7 +3,7 @@ class PactRubyStandalone < Formula
     homepage "https://github.com/pact-foundation/pact-ruby-standalone"
     url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.88.3/pact-1.88.3-osx.tar.gz"
     version "1.88.3"
-    sha256 "73fa53ec53e2e53243cf8cb21feabb8245a7b42e2c0c82e3dfa57906ea983fc0"
+    sha256 "b52cfc7c2e405c26d426f817961d9816c7e57ded"
 
     def install
         bin.install Dir["bin/*"]
