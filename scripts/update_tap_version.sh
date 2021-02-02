@@ -5,7 +5,7 @@ homepage="https://github.com/pact-foundation/pact-ruby-standalone"
 version=$1
 FORMULAE_FILE="pact-ruby-standalone.rb"
 
-write_homebrew_formulae() {    
+write_homebrew_formulae() {
     if [ ! -f "$FORMULAE_FILE" ] ; then
         touch "$FORMULAE_FILE"
     else
@@ -18,7 +18,7 @@ write_homebrew_formulae() {
         echo "    homepage \"$homepage\"" >&3
         echo "    url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
         echo "    version \"$version\"" >&3
-        echo "    sha256 \"${shasignature[1]}\"" >&3
+        echo "    sha256 \"${brewshasignature[1]}\"" >&3
         echo "" >&3
         echo "    def install" >&3
         echo "        bin.install Dir[\"bin/*\"]" >&3
@@ -58,19 +58,22 @@ else
     echo "⬇️  Downloading pact-$version-osx.tar.gz from $homepage"
     curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz
 
-    shasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
-    echo "🔏 Checksum:\t ${shasignature[1]}"
+    brewshasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
+    echo "🔏 Checksum SHA256:\t ${brewshasignature[1]}"
+
+		shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
+    echo "🔏 Checksum SHA1:\t ${shasignature[1]}"
 
     echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
     curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz.checksum
 
     expectedsha=( $(eval "cat pact-$version-osx.tar.gz.checksum") )
-    echo "🔏 Expected:\t ${expectedsha[0]}"
+    echo "🔏 Expected SHA1:\t ${expectedsha[0]}"
 
     if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
-        echo "👮‍♀️ Check: 👍"
+        echo "👮‍♀️ SHA Check: 👍"
     else
-        echo "👮‍♀️ Check: 🚨 - checksums do not match!"
+        echo "👮‍♀️ SHA Check: 🚨 - checksums do not match!"
         exit 1
     fi
 
