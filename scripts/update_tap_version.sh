@@ -58,7 +58,7 @@ else
     echo "⬇️  Downloading pact-$version-osx.tar.gz from $homepage"
     curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz
 
-    shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
+    shasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
     echo "🔏 Checksum:\t ${shasignature[1]}"
 
     echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
