@@ -1,0 +1,27 @@
+name: Update version
+
+on:
+  repository_dispatch:
+    types:
+      - pact-ruby-standalone-released
+
+jobs:
+  release:
+    name: Release update
+    runs-on: macOS-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Config github actor
+        run: |
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config pull.ff only
+
+      - name: Run update script
+        run: |
+          ./scripts/update_tap_version.sh ${{ github.event.client_payload.version }}
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'

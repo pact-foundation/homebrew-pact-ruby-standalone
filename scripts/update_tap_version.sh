@@ -47,7 +47,7 @@ display_usage() {
 }
 
 if [[ $# -eq 0 ]] ; then
-    echo "🚨 Provide an argument for the pact-ruby-standalone version as x.yy.z"
+    echo "🚨 Please supply the pact-ruby-standalone version to upgrade to"
     display_usage
     exit 1
 elif [[ $1 == "--help" ||  $1 == "-h" ]] ; then
@@ -79,6 +79,7 @@ else
 
     echo "🧹 Cleaning up..."
     rm pact-$1-osx.tar.gz
+		rm pact-$1-osx.tar.gz.checksum
     echo "🧪 Writing formulae..."
 
     write_homebrew_formulae
@@ -86,11 +87,13 @@ else
     echo "⚗️  Sorting out the homebrew tap version... "
     git checkout -b version/v$version
     git add $FORMULAE_FILE
-    git commit -m "Release of version v$version"
-    git push -u origin version/v$version
+    git commit -m "chore(release): Update version to v$version"
+    git push --set-upstream origin version/v$version
 
     echo "👏  Go and open that PR now:"
     echo "🔗  $homepage/compare/master...version/v$version"
+
+		hub pull-request --message "chore(release): Update version to v${version}"
 
     echo "🎉 Done!"
 
