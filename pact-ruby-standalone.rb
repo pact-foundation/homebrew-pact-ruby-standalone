@@ -1,9 +1,9 @@
 class PactRubyStandalone < Formula
     desc "A standalone pact command line executable using the ruby pact implementation and Travelling Ruby"
     homepage "https://github.com/pact-foundation/pact-ruby-standalone"
-    url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.88.69/pact-1.88.69-osx.tar.gz"
-    version "1.88.69"
-    sha256 "f2c9dc72da8e40fb7f15c9c54e69033e0ac656b26caf9596d94aea0e90f16277"
+    url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.88.70/pact-1.88.70-osx.tar.gz"
+    version "1.88.70"
+    sha256 "4a9d123f33191bf07137e6e814c0862ce9a5b89a3f04499ede9e525e373cae4a"
 
     def install
         bin.install Dir["bin/*"]
