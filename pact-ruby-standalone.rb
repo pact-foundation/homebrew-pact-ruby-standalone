@@ -9,7 +9,7 @@ class PactRubyStandalone < Formula
         bin.install Dir["bin/*"]
         lib.install Dir["lib/*"]
 
-        puts "# Run "pact-mock-service help [COMMAND]" (for more see https://github.com/pact-foundation/pact-ruby-standalone/releases/)
+        puts "# Run 'pact-mock-service help [COMMAND]' (for more see https://github.com/pact-foundation/pact-ruby-standalone/releases/)
     end
 
     test do
