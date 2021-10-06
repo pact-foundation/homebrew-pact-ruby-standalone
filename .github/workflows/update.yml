@@ -25,3 +25,9 @@ jobs:
           ./scripts/update_tap_version.sh ${{ github.event.client_payload.version }}
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Verify tap (⚠️ experimental ⚠️)
+        run: |
+          brew pull ${{ github.event.issue.number }}
+          brew install --verbose --debug pact-ruby-standalone
+          brew audit --strict --online pact-ruby-standalone
