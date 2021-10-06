@@ -58,7 +58,7 @@ else
     brewshasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
     echo "🔏 Checksum SHA256:\t ${brewshasignature[1]}"
 
-		shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
+    shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
     echo "🔏 Checksum SHA1:\t ${shasignature[1]}"
 
     echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
@@ -76,7 +76,7 @@ else
 
     echo "🧹 Cleaning up..."
     rm pact-$1-osx.tar.gz
-		rm pact-$1-osx.tar.gz.checksum
+    rm pact-$1-osx.tar.gz.checksum
     echo "🧪 Writing formulae..."
 
     write_homebrew_formulae
@@ -90,7 +90,7 @@ else
     echo "👏  Go and open that PR now:"
     echo "🔗  $homepage/compare/master...version/v$version"
 
-		hub pull-request --message "chore(release): Update version to v${version}"
+    hub pull-request --message "chore(release): Update version to v${version}"
 
     echo "🎉 Done!"
 
