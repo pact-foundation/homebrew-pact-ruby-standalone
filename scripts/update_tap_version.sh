@@ -24,7 +24,7 @@ write_homebrew_formulae() {
         echo "    bin.install Dir[\"bin/*\"]" >&3
         echo "    lib.install Dir[\"lib/*\"]" >&3
         echo "" >&3
-        echo "    puts \"# Run 'pact-mock-service help' (see $homepage/releases/)\"" >&3
+        echo "    puts \"# Run 'pact-mock-service --help' (see $homepage/releases/)\"" >&3
         echo "  end" >&3
         echo "" >&3
         echo "  test do" >&3
