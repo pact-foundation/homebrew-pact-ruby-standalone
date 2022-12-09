@@ -1,6 +1,6 @@
 # homebrew-pact-ruby-standalone
 
-The PACT Ruby Standalone public homebrew tap for OS X homebrew formulae.
+The Pact Ruby Standalone public homebrew tap for OS X homebrew formulae.
 
 The easier way to install [`mock-pact-service`](https://github.com/pact-foundation/pact-ruby-standalone) bundle of tools on your macOS using Homebrew.
 
