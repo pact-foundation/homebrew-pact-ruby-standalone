@@ -28,6 +28,7 @@ jobs:
 
       - name: Verify tap (⚠️ experimental ⚠️)
         run: |
-          brew pull ${{ github.event.issue.number }}
+          brew install hub
+          hub checkout ${{ github.event.issue.number }}
           brew install --verbose --debug pact-ruby-standalone
           brew audit --strict --online pact-ruby-standalone
