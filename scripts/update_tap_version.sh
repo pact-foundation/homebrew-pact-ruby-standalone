@@ -14,10 +14,9 @@ write_homebrew_formulae() {
 
      exec 3<> $FORMULAE_FILE
         echo "class PactRubyStandalone < Formula" >&3
-        echo "  desc \"Standalone pact command-line executable using the Ruby Pact implementation and Travelling Ruby\"" >&3
+        echo "  desc \"Standalone pact CLI executable using the Ruby Pact impl and Travelling Ruby\"" >&3
         echo "  homepage \"$homepage\"" >&3
         echo "  url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
-        echo "  version \"$version\"" >&3
         echo "  sha256 \"${brewshasignature[1]}\"" >&3
         echo "" >&3
         echo "  def install" >&3
