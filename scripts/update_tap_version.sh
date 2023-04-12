@@ -16,18 +16,45 @@ write_homebrew_formulae() {
         echo "class PactRubyStandalone < Formula" >&3
         echo "  desc \"Standalone pact CLI executable using the Ruby Pact impl and Travelling Ruby\"" >&3
         echo "  homepage \"$homepage\"" >&3
-        echo "  url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
-        echo "  sha256 \"${brewshasignature[1]}\"" >&3
+        echo "  version \"$version\"" >&3
+        echo "  on_macos do" >&3
+        echo "    on_intel do" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
+        echo "      sha256 \"${sha_osx_x86_64}\"" >&3
+        echo "    end" >&3
+        echo "    on_arm do" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
+        echo "      sha256 \"${sha_osx_x86_64}\"" >&3
+        echo "    end" >&3
+        echo "  end" >&3
+        echo "  on_linux do" >&3
+        echo "    on_intel do" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-linux-x86_64.tar.gz\"" >&3
+        echo "      sha256 \"${sha_linux_x86_64}\"" >&3
+        echo "    end" >&3
+        echo "  end" >&3
         echo "" >&3
         echo "  def install" >&3
+        echo "    # pact-ruby-standalone" >&3
         echo "    bin.install Dir[\"bin/*\"]" >&3
         echo "    lib.install Dir[\"lib/*\"]" >&3
-        echo "" >&3
         echo "    puts \"# Run 'pact-mock-service --help' (see $homepage/releases/)\"" >&3
+        echo "    OS.mac? && Hardware::CPU.arm? do" >&3
+        echo "      puts \"# Rosetta is required to run pact-ruby-standalone commands\"" >&3
+        echo "      puts \"# sudo softwareupdate --install-rosetta --agree-to-license\"" >&3
+        echo "    end" >&3
         echo "  end" >&3
         echo "" >&3
         echo "  test do" >&3
+        echo "    system \"#{bin}/pact\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-broker\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-message\", \"help\"" >&3
         echo "    system \"#{bin}/pact-mock-service\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-plugin-cli\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-mock-service\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-provider-verifier\", \"help\"" >&3
+        echo "    system \"#{bin}/pact-stub-service\", \"help\"" >&3
+        echo "    system \"#{bin}/pactflow\", \"help\"" >&3
         echo "  end" >&3
         echo "end" >&3
     exec 3>&-
@@ -38,7 +65,7 @@ display_help() {
 }
 
 display_usage() {
-    echo "\nUsage:\n\"./scripts/update_tap_version.sh 1.64.1\"\n"
+    echo "\nUsage:\n\"CREATE_PR=true ./scripts/update_tap_version.sh 1.64.1\"\n"
 }
 
 if [[ $# -eq 0 ]] ; then
@@ -50,47 +77,72 @@ elif [[ $1 == "--help" ||  $1 == "-h" ]] ; then
     display_usage
     exit 1
 else
-    echo "⬇️  Downloading pact-$version-osx.tar.gz from $homepage"
-    curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz
 
-    brewshasignature=( $(eval "openssl dgst -sha256 pact-$version-osx.tar.gz") )
-    echo "🔏 Checksum SHA256:\t ${brewshasignature[1]}"
+shas=()
+for platform in osx linux; do 
+    for arch in x86_64; do 
+        if [[ ${platform} == "osx" ]]
+        then
+            filename=pact-$version-${platform}
+        else
+            filename=pact-$version-${platform}-${arch}
+        fi
+        echo "⬇️  Downloading $filename.tar.gz from $homepage"
+        curl -LO $homepage/releases/download/v$version/$filename.tar.gz
 
-    shasignature=( $(eval "openssl dgst -sha1 pact-$version-osx.tar.gz") )
-    echo "🔏 Checksum SHA1:\t ${shasignature[1]}"
+        brewshasignature=( $(eval "openssl dgst -sha256 $filename.tar.gz") )
+        echo "🔏 Checksum SHA256:\t ${brewshasignature[1]} for ${arch}"
 
-    echo "⬇️  Downloading pact-$version-osx.tar.gz.checksum"
-    curl -LO $homepage/releases/download/v$version/pact-$version-osx.tar.gz.checksum
+        shasignature=( $(eval "openssl dgst -sha1 $filename.tar.gz") )
+        echo "🔏 Checksum SHA1:\t ${shasignature[1]} for ${platform}-${arch}"
 
-    expectedsha=( $(eval "cat pact-$version-osx.tar.gz.checksum") )
-    echo "🔏 Expected SHA1:\t ${expectedsha[0]}"
+        echo "⬇️  Downloading $filename.tar.gz.checksum for ${platform}-${arch}"
+        curl -LO $homepage/releases/download/v$version/$filename.tar.gz.checksum
 
-    if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
-        echo "👮‍♀️ SHA Check: 👍"
-    else
-        echo "👮‍♀️ SHA Check: 🚨 - checksums do not match!"
-        exit 1
-    fi
+        expectedsha=( $(eval "cat $filename.tar.gz.checksum") )
+        echo "🔏 Expected SHA1:\t ${expectedsha[0]} for ${platform}-${arch}"
 
-    echo "🧹 Cleaning up..."
-    rm pact-$1-osx.tar.gz
-    rm pact-$1-osx.tar.gz.checksum
-    echo "🧪 Writing formulae..."
+        if [ "${shasignature[1]}" == "${expectedsha[0]}" ]; then
+            echo "👮‍♀️ SHA Check: 👍 for ${platform}-${arch}"
+        else
+            echo "👮‍♀️ SHA Check: 🚨 - checksums do not match! for ${platform}-${arch}"
+            exit 1
+        fi
+
+        echo "🧹 Cleaning up..."
+        rm $filename.tar.gz
+        rm $filename.tar.gz.checksum
+        echo "🔏 Checksum SHA256:\t ${brewshasignature[1]} for ${platform}-${arch}"
+        echo "🧪 Writing formulae..."
+        shas+=(${brewshasignature[1]})
+    done 
+done 
+
+    sha_osx_x86_64=${shas[0]}
+    sha_linux_x86_64=${shas[1]}
+    echo "sha_osx_x86_64:" $sha_osx_x86_64
+    echo "sha_linux_x86_64:" $sha_linux_x86_64
 
     write_homebrew_formulae
 
-    echo "⚗️  Sorting out the homebrew tap version... "
-    git checkout -b version/v$version
-    git add $FORMULAE_FILE
-    git commit -m "chore(release): Update version to v$version"
-    git push --set-upstream origin version/v$version
+    if [[ ! -n "${CREATE_PR}" ]] 
+    then
+        echo "🎉 Done!"
+    else
+        git checkout -b version/v$version
+        git add $FORMULAE_FILE
+        git commit -m "chore(release): Update version to v$version"
+        git push --set-upstream origin version/v$version
 
-    echo "👏  Go and open that PR now:"
-    echo "🔗  $homepage/compare/master...version/v$version"
+        echo "👏  Go and open that PR now:"
+        echo "🔗  $homepage/compare/master...version/v$version"
 
-    hub pull-request --message "chore(release): Update version to v${version}"
+        hub pull-request --message "chore(release): Update version to v${version}"
+        echo "🎉 Done!"
+    fi
 
-    echo "🎉 Done!"
+
+
 
     exit 0
 fi
