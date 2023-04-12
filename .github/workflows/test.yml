@@ -1,0 +1,41 @@
+name: Test versions
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: test
+    strategy:
+      matrix:
+        os: [macOS-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install tap
+        run: |
+          brew tap pact-foundation/pact-ruby-standalone
+          cd $(brew --prefix)/Homebrew/Library/Taps/pact-foundation/homebrew-pact-ruby-standalone/
+          hub checkout ${{ github.sha }}
+          brew install --verbose --debug pact-ruby-standalone
+
+      - name: Test tap
+        run: |
+          pact
+          pact-broker --help
+          pact-message --help
+          pact-mock-service --help
+          pact-plugin-cli --help
+          pact-provider-verifier --help
+          pact-stub-service --help
+          pactflow --help
+
+      - name: Audit tap (⚠️ experimental ⚠️) - so we ignore the error code 
+        run: |
+          brew audit --strict --online --installed pact-ruby-standalone || true
+
