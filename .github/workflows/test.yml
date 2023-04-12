@@ -25,8 +25,8 @@ jobs:
 
       - name: Install tap
         run: |
-          brew tap you54f/pact-ruby-standalone
-          cd $(brew --prefix)/Homebrew/Library/Taps/you54f/homebrew-pact-ruby-standalone/
+          brew tap pact-foundation/pact-ruby-standalone
+          cd $(brew --prefix)/Homebrew/Library/Taps/pact-foundation/homebrew-pact-ruby-standalone/
           hub checkout ${{ github.sha }}
           brew install --verbose --debug pact-ruby-standalone
 
