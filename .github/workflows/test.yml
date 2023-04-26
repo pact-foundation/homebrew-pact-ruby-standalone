@@ -9,7 +9,7 @@ jobs:
     name: test
     strategy:
       matrix:
-        os: [macOS-latest]
+        os: [macOS-latest,ubuntu-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
@@ -17,12 +17,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: install homebrew
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+        if: ${{ runner.os == 'Linux' }}
+
       - name: Install tap
         run: |
           brew tap pact-foundation/pact-ruby-standalone
           cd $(brew --prefix)/Homebrew/Library/Taps/pact-foundation/homebrew-pact-ruby-standalone/
           hub checkout ${{ github.sha }}
           brew install --verbose --debug pact-ruby-standalone
+
+      - name: Brew test tap
+        run: |
+          brew test pact-ruby-standalone
 
       - name: Test tap
         run: |
@@ -34,8 +44,9 @@ jobs:
           pact-provider-verifier --help
           pact-stub-service --help
           pactflow --help
+        
 
       - name: Audit tap (⚠️ experimental ⚠️) - so we ignore the error code 
         run: |
-          brew audit --strict --online --installed pact-ruby-standalone || true
+          brew audit --strict --online pact-ruby-standalone || true
 
