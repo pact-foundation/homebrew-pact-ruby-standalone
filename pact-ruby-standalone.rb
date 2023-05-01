@@ -1,21 +1,25 @@
 class PactRubyStandalone < Formula
   desc "Standalone pact CLI executable using the Ruby Pact impl and Travelling Ruby"
   homepage "https://github.com/pact-foundation/pact-ruby-standalone"
-  version "1.92.0"
+  version "2.0.0"
   on_macos do
     on_intel do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.92.0/pact-1.92.0-osx.tar.gz"
-      sha256 "dee18427b9eced63a159d5e64c5ff0d7aa2d4a1e67255b24b239c007c2c8b6c1"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.0.0/pact-2.0.0-osx-x86_64.tar.gz"
+      sha256 "025b1b8de4c99f463960a71ad720b0b92bda19bfed2130cfdd819a2af6c27ee1"
     end
     on_arm do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.92.0/pact-1.92.0-osx.tar.gz"
-      sha256 "dee18427b9eced63a159d5e64c5ff0d7aa2d4a1e67255b24b239c007c2c8b6c1"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.0.0/pact-2.0.0-osx-arm64.tar.gz"
+      sha256 "d91d2fa7596b20afdd6d1d4f1fe0e1353ceb249892b48b4bbd85a303f7f4ff31"
     end
   end
   on_linux do
     on_intel do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v1.92.0/pact-1.92.0-linux-x86_64.tar.gz"
-      sha256 "a5922e4098cae6f8717b9d51fda050d30540dff657c44f61eed9d51875f7822a"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.0.0/pact-2.0.0-linux-x86_64.tar.gz"
+      sha256 "42fb3a74a1ca1504b0bbc541d3521a01a32eeb513bf5edceae3ffb9d760d203d"
+    end
+    on_arm do
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.0.0/pact-2.0.0-linux-arm64.tar.gz"
+      sha256 "3a421a35d2ab1da13fc4a99a1506f7243e9702ebacd5cc5fee710cf55e2d5dd5"
     end
   end
 
@@ -24,10 +28,6 @@ class PactRubyStandalone < Formula
     bin.install Dir["bin/*"]
     lib.install Dir["lib/*"]
     puts "# Run 'pact-mock-service --help' (see https://github.com/pact-foundation/pact-ruby-standalone/releases/)"
-    OS.mac? && Hardware::CPU.arm? do
-      puts "# Rosetta is required to run pact-ruby-standalone commands"
-      puts "# sudo softwareupdate --install-rosetta --agree-to-license"
-    end
   end
 
   test do
