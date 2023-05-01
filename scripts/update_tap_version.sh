@@ -19,12 +19,12 @@ write_homebrew_formulae() {
         echo "  version \"$version\"" >&3
         echo "  on_macos do" >&3
         echo "    on_intel do" >&3
-        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx-x86_64.tar.gz\"" >&3
         echo "      sha256 \"${sha_osx_x86_64}\"" >&3
         echo "    end" >&3
         echo "    on_arm do" >&3
-        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx.tar.gz\"" >&3
-        echo "      sha256 \"${sha_osx_x86_64}\"" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-osx-arm64.tar.gz\"" >&3
+        echo "      sha256 \"${sha_osx_arm64}\"" >&3
         echo "    end" >&3
         echo "  end" >&3
         echo "  on_linux do" >&3
@@ -32,6 +32,10 @@ write_homebrew_formulae() {
         echo "      url \"$homepage/releases/download/v$version/pact-$version-linux-x86_64.tar.gz\"" >&3
         echo "      sha256 \"${sha_linux_x86_64}\"" >&3
         echo "    end" >&3
+        echo "    on_arm do" >&3
+        echo "      url \"$homepage/releases/download/v$version/pact-$version-linux-arm64.tar.gz\"" >&3
+        echo "      sha256 \"${sha_linux_arm64}\"" >&3
+        echo "    end" >&3       
         echo "  end" >&3
         echo "" >&3
         echo "  def install" >&3
@@ -39,10 +43,6 @@ write_homebrew_formulae() {
         echo "    bin.install Dir[\"bin/*\"]" >&3
         echo "    lib.install Dir[\"lib/*\"]" >&3
         echo "    puts \"# Run 'pact-mock-service --help' (see $homepage/releases/)\"" >&3
-        echo "    OS.mac? && Hardware::CPU.arm? do" >&3
-        echo "      puts \"# Rosetta is required to run pact-ruby-standalone commands\"" >&3
-        echo "      puts \"# sudo softwareupdate --install-rosetta --agree-to-license\"" >&3
-        echo "    end" >&3
         echo "  end" >&3
         echo "" >&3
         echo "  test do" >&3
@@ -80,18 +80,13 @@ else
 
 shas=()
 for platform in osx linux; do 
-    for arch in x86_64; do 
-        if [[ ${platform} == "osx" ]]
-        then
-            filename=pact-$version-${platform}
-        else
-            filename=pact-$version-${platform}-${arch}
-        fi
+    for arch in x86_64 arm64; do 
+        filename=pact-$version-${platform}-${arch}
         echo "⬇️  Downloading $filename.tar.gz from $homepage"
         curl -LO $homepage/releases/download/v$version/$filename.tar.gz
 
         brewshasignature=( $(eval "openssl dgst -sha256 $filename.tar.gz") )
-        echo "🔏 Checksum SHA256:\t ${brewshasignature[1]} for ${arch}"
+        echo "🔏 Checksum SHA256:\t ${brewshasignature[1]} for ${platform}-${arch}"
 
         shasignature=( $(eval "openssl dgst -sha1 $filename.tar.gz") )
         echo "🔏 Checksum SHA1:\t ${shasignature[1]} for ${platform}-${arch}"
@@ -119,9 +114,13 @@ for platform in osx linux; do
 done 
 
     sha_osx_x86_64=${shas[0]}
-    sha_linux_x86_64=${shas[1]}
+    sha_osx_arm64=${shas[1]}
+    sha_linux_x86_64=${shas[2]}
+    sha_linux_arm64=${shas[3]}
     echo "sha_osx_x86_64:" $sha_osx_x86_64
+    echo "sha_osx_arm64:" $sha_osx_arm64
     echo "sha_linux_x86_64:" $sha_linux_x86_64
+    echo "sha_linux_arm64:" $sha_linux_arm64
 
     write_homebrew_formulae
 
