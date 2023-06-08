@@ -49,7 +49,6 @@ write_homebrew_formulae() {
         echo "    system \"#{bin}/pact\", \"help\"" >&3
         echo "    system \"#{bin}/pact-broker\", \"help\"" >&3
         echo "    system \"#{bin}/pact-message\", \"help\"" >&3
-        echo "    system \"#{bin}/pact-mock-service\", \"help\"" >&3
         echo "    system \"#{bin}/pact-plugin-cli\", \"help\"" >&3
         echo "    system \"#{bin}/pact-mock-service\", \"help\"" >&3
         echo "    system \"#{bin}/pact-provider-verifier\", \"help\"" >&3
