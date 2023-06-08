@@ -46,7 +46,7 @@ jobs:
           pactflow --help
         
 
-      - name: Audit tap (⚠️ experimental ⚠️) - so we ignore the error code 
+      - name: Audit tap
         run: |
-          brew audit --strict --online pact-ruby-standalone || true
+          brew audit --strict --online pact-ruby-standalone
 
