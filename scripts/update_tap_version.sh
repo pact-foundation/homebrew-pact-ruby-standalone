@@ -135,7 +135,7 @@ done
         echo "👏  Go and open that PR now:"
         echo "🔗  $homepage/compare/master...version/v$version"
 
-        hub pull-request --message "chore(release): Update version to v${version}"
+        gh pr create --title "chore(release): Update version to v${version}" --fill
         echo "🎉 Done!"
     fi
 
