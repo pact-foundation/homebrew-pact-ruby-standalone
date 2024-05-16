@@ -9,7 +9,7 @@ jobs:
     name: test
     strategy:
       matrix:
-        os: [macOS-latest,ubuntu-latest]
+        os: [macOS-12, macos-14,ubuntu-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
@@ -24,9 +24,17 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
 
       - name: Install tap
+        if: matrix.os != 'macos-14'
         run: |
           brew tap pact-foundation/pact-ruby-standalone
           cd $(brew --prefix)/Homebrew/Library/Taps/pact-foundation/homebrew-pact-ruby-standalone/
+          git checkout ${{ github.sha }}
+          brew install --verbose --debug pact-ruby-standalone
+      - name: Install tap
+        if: matrix.os == 'macos-14'
+        run: |
+          brew tap pact-foundation/pact-ruby-standalone
+          cd $(brew --prefix)/Library/Taps/pact-foundation/homebrew-pact-ruby-standalone/
           git checkout ${{ github.sha }}
           brew install --verbose --debug pact-ruby-standalone
 
