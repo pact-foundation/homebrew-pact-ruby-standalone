@@ -1,25 +1,25 @@
 class PactRubyStandalone < Formula
   desc "Standalone pact CLI executable using the Ruby Pact impl and Travelling Ruby"
   homepage "https://github.com/pact-foundation/pact-ruby-standalone"
-  version "2.4.6"
+  version "2.4.9"
   on_macos do
     on_intel do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.6/pact-2.4.6-osx-x86_64.tar.gz"
-      sha256 "5cb2356d03768a2f3b72d77180c51a78f5045b98fea423690c4de4d1ab48c0bd"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.9/pact-2.4.9-osx-x86_64.tar.gz"
+      sha256 "3b15e86aaae2e682b1008fa895d270c12c0aa97f236c74a140bd7874f8a4a361"
     end
     on_arm do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.6/pact-2.4.6-osx-arm64.tar.gz"
-      sha256 "d73f4cc9f6a1155ef8fc7edc49be01182cb676468ee94f73727215222ef5e4c0"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.9/pact-2.4.9-osx-arm64.tar.gz"
+      sha256 "fafd275e6b127b277090cf0a9a805517883f97a0a2323b2a3f3fddf4db80800e"
     end
   end
   on_linux do
     on_intel do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.6/pact-2.4.6-linux-x86_64.tar.gz"
-      sha256 "cf25215ed31e047ee8a90f091abb710e74c8c4fad5e20d79fb28a31b448cfcf4"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.9/pact-2.4.9-linux-x86_64.tar.gz"
+      sha256 "4c0eb22e8b523498a36104c68ae2680586e8ad07de4404c75048cf549eaa8a2a"
     end
     on_arm do
-      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.6/pact-2.4.6-linux-arm64.tar.gz"
-      sha256 "fc6a8099b6e20c471e27ae1076feeef846f039c51b6a6b482327cb4d0b9d7b61"
+      url "https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v2.4.9/pact-2.4.9-linux-arm64.tar.gz"
+      sha256 "c056878db3a300a0339e13f2d9da30fb9770afe499ece3c804bb5461f1774da6"
     end
   end
 
